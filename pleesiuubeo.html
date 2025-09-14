@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>happi 19th bday plee beo</title>
+  <style>
+    body{margin:0;font-family:'Poppins',sans-serif;background:linear-gradient(180deg,#fceaff,#ffeef8);min-height:200vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow-x:hidden}
+    .card{background:white;max-width:700px;width:90%;padding:40px;margin-top:40px;border-radius:24px;box-shadow:0 8px 24px rgba(0,0,0,0.1);text-align:center;position:relative;z-index:2}
+    h1{font-size:2.2rem;color:#ff4d6d;margin-bottom:12px}
+    p{color:#444;font-size:1.1rem;margin:0 auto 20px;max-width:500px}
+    .heart{color:#ff4d6d;font-size:2rem;animation:pulse 1.2s infinite}
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+    button{background:#ff4d6d;border:none;padding:12px 20px;color:white;font-weight:600;border-radius:12px;cursor:pointer;transition:background 0.3s;margin-top:10px}
+    button:hover{background:#e13b59}
+    .easter{position:absolute;cursor:pointer}
+    .balloon{width:50px;animation:float 6s ease-in-out infinite}
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-40px)}100%{transform:translateY(0)}}
+    .confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+    .confetti span{position:absolute;width:8px;height:12px;background:#ff4d6d;opacity:0.9;animation:fall 3s linear infinite}
+    @keyframes fall{0%{transform:translateY(-10vh)}100%{transform:translateY(110vh)}}
+    .popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:24px;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,0.2);z-index:5;max-width:320px;text-align:center}
+    .popup h2{margin-top:0;color:#ff4d6d}
+    .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);z-index:4}
+    #game{margin-top:20px}
+    #game input{padding:8px;border-radius:8px;border:1px solid #ccc;margin-right:6px}
+    /* wordle */
+    #wordle{margin:60px auto;max-width:400px;text-align:center}
+    .grid{display:grid;grid-template-columns:repeat(5,60px);grid-gap:8px;justify-content:center;margin-bottom:20px}
+    .cell{width:60px;height:60px;border:2px solid #ccc;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:bold;text-transform:uppercase;background:white}
+    .correct{background:#6aaa64!important;color:white!important}
+    .present{background:#c9b458!important;color:white!important}
+    .absent{background:#787c7e!important;color:white!important}
+    .keyboard{display:grid;grid-template-columns:repeat(10,1fr);grid-gap:6px;max-width:600px;margin:0 auto}
+    .key{padding:12px;border-radius:6px;background:#ddd;font-weight:bold;cursor:pointer;user-select:none}
+    .key.correct{background:#6aaa64;color:white}
+    .key.present{background:#c9b458;color:white}
+    .key.absent{background:#555;color:white}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>:DDD hihi <span class="heart">❤</span></h1>
+    <p>chúc plee beo sinh nhật vui vẻ ạaa. thỏ chúc plee luôn vui vẻ, ít bị stress nò. chúc plee tuổi mới sẽ hard-working hơn, và có thể đạt được nhìu achievements hơn nhá hihi ily 🎂✨</p>
+    <button id="btn">click for a surrrrprise</button>
+
+    <!-- Mini guessing game -->
+    <div id="game">
+      <p>🎮 mini game: guess my favorite word >:)))</p>
+      <input type="text" id="guess" placeholder="Type your guess" />
+      <button id="checkGuess">guess......</button>
+      <p id="gameMsg"></p>
+    </div>
+  </div>
+
+  <!-- Wordle game -->
+  <div id="wordle">
+    <h2>"fruity" wordle >:))))))</h2>
+    <div class="grid" id="grid"></div>
+    <p id="wordleMsg"></p>
+    <div class="keyboard" id="keyboard"></div>
+  </div>
+
+  <!-- hidden easter egg balloon -->
+  <img src="https://cdn-icons-png.flaticon.com/512/616/616490.png" class="easter balloon" style="right:10%;top:20%" title="🎈" />
+
+  <!-- confetti container -->
+  <div class="confetti" id="confetti"></div>
+
+  <script>
+    const btn=document.getElementById('btn');
+    const confetti=document.getElementById('confetti');
+
+    btn.addEventListener('click',()=>{
+      makeConfetti();
+      alert('🎉 bất ngờ hokk, về lẹ dùm 💕');
+    });
+
+    // balloon easter egg
+    document.querySelector('.easter').addEventListener('click',()=>{
+      showPopup('ú òa','easter egg bựa hok, ờ z th đóa');
+    });
+
+    function makeConfetti(){
+      confetti.innerHTML='';
+      const colors=['#ff4d6d','#ffd166','#06d6a0','#118ab2','#8338ec'];
+      for(let i=0;i<80;i++){
+        let s=document.createElement('span');
+        s.style.left=Math.random()*100+'%';
+        s.style.animationDuration=(2+Math.random()*2)+'s';
+        s.style.background=colors[Math.floor(Math.random()*colors.length)];
+        confetti.appendChild(s);
+      }
+      setTimeout(()=>confetti.innerHTML='',4000);
+    }
+
+    function showPopup(title,msg){
+      let overlay=document.createElement('div'); overlay.className='overlay';
+      let pop=document.createElement('div'); pop.className='popup';
+      pop.innerHTML=`<h2>${title}</h2><p>${msg}</p><button onclick="this.closest('.popup').remove();document.querySelector('.overlay').remove();">Close</button>`;
+      document.body.appendChild(overlay);
+      document.body.appendChild(pop);
+    }
+
+    // mini guessing game
+    const favWord = "plee"; // you can change this word!
+    document.getElementById('checkGuess').addEventListener('click',()=>{
+      let guess=document.getElementById('guess').value.trim().toLowerCase();
+      let msg=document.getElementById('gameMsg');
+      if(guess===favWord){
+        makeConfetti();
+        msg.textContent="🎉 ùm đúng r...";
+      } else {
+        msg.textContent="❌ sai ròi lại đuy";
+      }
+    });
+
+    // Wordle game
+    const secretWord = "mango"; // set your 5-letter birthday word
+    const grid=document.getElementById('grid');
+    const rows=4, cols=5; // only 4 guesses allowed
+    let currentRow=0;
+    let currentCol=0;
+    let gameOver=false;
+
+    for(let r=0;r<rows*cols;r++){
+      let div=document.createElement('div');
+      div.className='cell';
+      grid.appendChild(div);
+    }
+
+    // Create keyboard
+    const letters = "QWERTYUIOPASDFGHJKLZXCVBNM".split("");
+    const keyboard=document.getElementById('keyboard');
+    const keyMap={};
+    letters.forEach(l=>{
+      let key=document.createElement('div');
+      key.className='key';
+      key.textContent=l;
+      key.addEventListener('click',()=>handleKeyInput(l));
+      keyboard.appendChild(key);
+      keyMap[l]=key;
+    });
+
+    // keyboard typing support
+    document.addEventListener('keydown',e=>{
+      if(gameOver) return;
+      if(e.key && typeof e.key==='string' && e.key.match(/^[a-zA-Z]$/)){
+        handleKeyInput(e.key.toUpperCase());
+      } else if(e.key==='Backspace'){
+        handleBackspace();
+      } else if(e.key==='Enter'){
+        handleEnter();
+      }
+    });
+
+    function handleKeyInput(letter){
+      if(currentCol<cols && currentRow<rows){
+        let idx=currentRow*cols+currentCol;
+        grid.children[idx].textContent=letter;
+        currentCol++;
+      }
+    }
+
+    function handleBackspace(){
+      if(currentCol>0){
+        currentCol--;
+        let idx=currentRow*cols+currentCol;
+        grid.children[idx].textContent='';
+      }
+    }
+
+    function handleEnter(){
+      if(currentCol<cols) return; // row not filled
+      let guess="";
+      for(let i=0;i<cols;i++){
+        guess+=grid.children[currentRow*cols+i].textContent.toLowerCase();
+      }
+      checkGuess(guess);
+    }
+
+    function updateKeyboard(letter,status){
+      let key=keyMap[letter.toUpperCase()];
+      if(!key) return;
+      if(status==='correct'){
+        key.classList.remove('present','absent');
+        key.classList.add('correct');
+      } else if(status==='present'){
+        if(!key.classList.contains('correct')){
+          key.classList.remove('absent');
+          key.classList.add('present');
+        }
+      } else if(status==='absent'){
+        if(!key.classList.contains('correct') && !key.classList.contains('present')){
+          key.classList.add('absent');
+        }
+      }
+    }
+
+    function checkGuess(guess){
+      let secret=secretWord.split('');
+      let guessArr=guess.split('');
+      let rowCells=[...grid.children].slice(currentRow*cols,(currentRow+1)*cols);
+
+      // mark correct first
+      guessArr.forEach((ch,i)=>{
+        if(secret[i]===ch){
+          rowCells[i].classList.add('correct');
+          updateKeyboard(ch,'correct');
+          secret[i]=null;
+          guessArr[i]=null;
+        }
+      });
+      // mark present/absent
+      guessArr.forEach((ch,i)=>{
+        if(ch && secret.includes(ch)){
+          rowCells[i].classList.add('present');
+          updateKeyboard(ch,'present');
+          secret[secret.indexOf(ch)]=null;
+        } else if(ch){
+          rowCells[i].classList.add('absent');
+          updateKeyboard(ch,'absent');
+        }
+      });
+
+      if(guess===secretWord){
+        document.getElementById('wordleMsg').textContent="🎉 zỏi thíeee, happi bday baby hihi";
+        makeConfetti(); // only on win
+        gameOver=true;
+        return;
+      }
+      currentRow++;
+      currentCol=0;
+      if(currentRow>=rows){
+        document.getElementById('wordleMsg').textContent=`😢 sai ròi, là MANGO.... từ này mà hok bít hả.`;
+        gameOver=true;
+      }
+    }
+  </script>
+</body>
+</html>
